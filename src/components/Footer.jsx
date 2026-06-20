@@ -1,4 +1,4 @@
-    import Footer_image from "../assets/footer_image.jpg";  
+    import Footer_image from "../assets/Footer_image.jpg";  
     function Footer() {
   return (
     <>
