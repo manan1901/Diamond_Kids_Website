@@ -1,9 +1,15 @@
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Plus, ChevronDown, Link } from "lucide-react";
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  X, 
+  MapPin, 
+  AlignLeft, 
+  Clock, 
+  ExternalLink 
+} from "lucide-react";
 
 // --- REPLACE THESE WITH YOUR ACTUAL KEYS ---
-// Note: Never commit real API keys to GitHub in a production app. 
-// Move this to a .env file (e.g., process.env.NEXT_PUBLIC_GOOGLE_API_KEY) later.
 const API_KEY = "AIzaSyBfIpE6sd_wmhUvzgKrqih3Y2jVwuFcQ4k";
 const CALENDAR_ID = "b5d1ca2d0d1e712870e05950abe88ffe7d884c1e62720ce2ccd1e5a7d94c09ab@group.calendar.google.com";
 
@@ -34,6 +40,7 @@ function getFourWeekGrid(targetDate) {
 export default function FourWeekCalendar() {
   const [cursor, setCursor] = useState(new Date());
   const [events, setEvents] = useState({});
+  const [selectedEvent, setSelectedEvent] = useState(null); // New state for modal
   const today = new Date(); 
 
   const monthLabel = cursor.toLocaleString("default", {
@@ -46,7 +53,6 @@ export default function FourWeekCalendar() {
   useEffect(() => {
     async function fetchEvents() {
       try {
-        // Fetch events from 2 months back to 2 months forward
         const timeMin = new Date(today.getFullYear(), today.getMonth() - 2, 1).toISOString();
         const timeMax = new Date(today.getFullYear(), today.getMonth() + 2, 1).toISOString();
         
@@ -54,7 +60,7 @@ export default function FourWeekCalendar() {
         
         const res = await fetch(url);
         const data = await res.json();
-        console.log("GOOGLE API RESPONSE:", data);  
+        
         if (data.items) {
           const formattedEvents = {};
           
@@ -66,17 +72,37 @@ export default function FourWeekCalendar() {
             const key = formatKey(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
             
             let timeString = "All Day";
+            let fullStart = dateObj.toLocaleDateString();
+            let fullEnd = "";
+
             if (item.start.dateTime) {
               timeString = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+              fullStart = dateObj.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+            }
+            
+            if (item.end?.dateTime) {
+              const endObj = new Date(item.end.dateTime);
+              fullEnd = endObj.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+            } else if (item.end?.date) {
+               // Subtract 1 day from all-day end dates because Google sets them to the day after
+               const endObj = new Date(item.end.date);
+               endObj.setDate(endObj.getDate() - 1);
+               fullEnd = endObj.toLocaleDateString();
             }
 
             if (!formattedEvents[key]) {
               formattedEvents[key] = [];
             }
             
+            // Save extra data for the modal
             formattedEvents[key].push({
               title: item.summary || "Untitled Event",
-              time: timeString
+              time: timeString,
+              fullStart,
+              fullEnd,
+              description: item.description || "",
+              location: item.location || "",
+              link: item.htmlLink || ""
             });
           });
           
@@ -87,8 +113,8 @@ export default function FourWeekCalendar() {
       }
     }
 
-    // Unconditionally call fetchEvents to ensure it runs
     fetchEvents();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); 
 
   const goToday = () => setCursor(new Date());
@@ -111,12 +137,12 @@ export default function FourWeekCalendar() {
     a.getDate() === b.getDate();
 
   return (
-    <div className="min-h-screen w-full bg-[#0b0e14] p-6 flex items-center justify-center">
+    <div className="min-h-screen w-full bg-[#0b0e14] p-6 flex items-center justify-center relative">
       <div className="w-full max-w-6xl rounded-2xl border border-white/10 bg-[#12151d] shadow-2xl overflow-hidden">
         
+        {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
           <h1 className="text-lg font-semibold text-white">{monthLabel}</h1>
-
           <div className="flex items-center gap-3">
             <div className="flex items-center rounded-lg bg-white/5 border border-white/10 overflow-hidden">
               <button onClick={goPrev} className="p-2 text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
@@ -129,12 +155,10 @@ export default function FourWeekCalendar() {
                 <ChevronRight size={16} />
               </button>
             </div>
-  
-            
-            
           </div>
         </div>
 
+        {/* Days of Week */}
         <div className="grid grid-cols-7 border-b border-white/10">
           {DAY_LABELS.map((d) => (
             <div key={d} className="py-3 text-center text-xs font-medium uppercase tracking-wide text-slate-400">
@@ -143,6 +167,7 @@ export default function FourWeekCalendar() {
           ))}
         </div>
 
+        {/* Calendar Grid */}
         <div className="grid grid-cols-7 auto-rows-[110px]">
           {cells.map((date, i) => {
             const key = formatKey(date.getFullYear(), date.getMonth(), date.getDate());
@@ -163,9 +188,13 @@ export default function FourWeekCalendar() {
                   )}
                 </div>
 
-                <div className="flex flex-col gap-1 mt-0.5 overflow-y-auto">
+                <div className="flex flex-col gap-1 mt-0.5 overflow-y-auto custom-scrollbar">
                   {dayEvents.map((ev, idx) => (
-                    <div key={idx} className="flex items-center justify-between gap-1 rounded-md px-1.5 py-1 text-[11px] leading-tight bg-white/5">
+                    <div 
+                      key={idx} 
+                      onClick={() => setSelectedEvent(ev)}
+                      className="flex items-center justify-between gap-1 rounded-md px-1.5 py-1 text-[11px] leading-tight bg-white/5 hover:bg-white/10 cursor-pointer transition-colors"
+                    >
                       <span className="truncate font-medium text-slate-200" title={ev.title}>
                         {ev.title}
                       </span>
@@ -178,6 +207,67 @@ export default function FourWeekCalendar() {
           })}
         </div>
       </div>
+
+      {/* Event Details Modal */}
+      {selectedEvent && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" 
+          onClick={() => setSelectedEvent(null)}
+        >
+          <div 
+            className="bg-[#1a1d27] border border-white/10 rounded-2xl w-full max-w-md p-6 shadow-2xl relative" 
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button 
+              onClick={() => setSelectedEvent(null)}
+              className="absolute top-4 right-4 p-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+            >
+              <X size={20} />
+            </button>
+            
+            <h2 className="text-xl font-semibold text-white mb-5 pr-8 leading-tight">
+              {selectedEvent.title}
+            </h2>
+            
+            <div className="flex flex-col gap-4 text-sm text-slate-300">
+              
+              {/* Time */}
+              <div className="flex items-start gap-3">
+                <Clock className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
+                <div>
+                  <p>{selectedEvent.fullStart}</p>
+                  {selectedEvent.fullEnd && selectedEvent.fullEnd !== selectedEvent.fullStart && (
+                    <p className="text-slate-400">to {selectedEvent.fullEnd}</p>
+                  )}
+                </div>
+              </div>
+              
+              {/* Location */}
+              {selectedEvent.location && (
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
+                  <p>{selectedEvent.location}</p>
+                </div>
+              )}
+              
+              {/* Description */}
+              {selectedEvent.description && (
+                <div className="flex items-start gap-3">
+                  <AlignLeft className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
+                  {/* Dangerously setting HTML because Google Calendar descriptions can contain basic HTML */}
+                  <div 
+                    className="prose prose-sm prose-invert max-w-none break-words" 
+                    dangerouslySetInnerHTML={{ __html: selectedEvent.description }} 
+                  />
+                </div>
+              )}
+
+         
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
