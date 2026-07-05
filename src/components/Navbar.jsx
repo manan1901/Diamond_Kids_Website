@@ -28,7 +28,7 @@ const Navbar = () => {
           <style>
             @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
           </style>
-          Admission Open 2025-26 | 
+          Admission Open 2026-27 | 
           {/* CHANGED: Wrapped "Apply Now" in a Link pointing to /admissions */}
           <Link to="/admissions" className="underline ml-1 hover:text-[#FF6B4A]">
             Apply Now

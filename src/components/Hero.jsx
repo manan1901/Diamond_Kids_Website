@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import buildingMain from "../assets/school-building-main.jpg";
+
 import video from "../assets/video.mp4"; // Update with your actual video file path
 
 

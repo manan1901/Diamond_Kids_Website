@@ -8,6 +8,7 @@ import Hero from './components/Hero';
 import QualityFeaturesSection from './components/QualityFeaturesSection';
 import Footer from './components/Footer';
 import ContactForm from './components/ContactForm'; 
+import Calendar  from './components/Calendar';
 
 function App() {
   return (
@@ -34,7 +35,12 @@ function App() {
             path="/admissions" 
             element={<ContactForm />} 
           />
+          <Route 
+         path="/calendar"
+         element={<Calendar/>}
+         />
         </Routes>
+         
       </main>
 
       <Footer />
