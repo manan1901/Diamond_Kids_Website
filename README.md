@@ -1,16 +1,32 @@
-# React + Vite
+# Diamond Kids School Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern and responsive school website built with **React** and **Vite**. The project is designed to provide parents, students, and visitors with an easy way to explore the school's information, facilities, admissions, and contact details through a clean and user friendly interface.
 
-Currently, two official plugins are available:
+Visit the live project here:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+**https://diamond-kids-school.vercel.app/**
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* Responsive design for desktop, tablet, and mobile devices
+* Modern and clean user interface
+* Fast performance powered by Vite
+* Easy navigation between pages
+* Optimized React component structure
+* Ready for future enhancements
+* 
+## Tech Stack
 
-## Expanding the ESLint configuration
+* React
+* Vite
+* JavaScript
+* HTML5
+* CSS3
+* 
+## Deployment
+The website is deployed on **Vercel** and is publicly available at:-
+https://diamond-kids-school.vercel.app/
+## License
+This project is created for educational purpose.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+This project is created for educational and portfolio purposes.
