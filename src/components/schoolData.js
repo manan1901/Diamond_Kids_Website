@@ -206,3 +206,159 @@ export const footerLinks = {
     { label: "Contact Us", to: "/contact" },
   ],
 };
+
+
+// =============================================================
+// NEW DATA (edit yahin se — components ko chhune ki zaroorat nahi)
+// =============================================================
+
+// ---- Navbar + Footer ke "Quick Links" dono yahin se aate hain ----
+export const mainNavLinks = [
+  { label: "Home", to: "/" },
+  { label: "Calendar", to: "/calendar" },
+  { label: "Online Fee Payment", to: "/online-fee-payment" },
+  { label: "Admissions", to: "/admissions" },
+  { label: "Gallery", to: "/gallery" },
+  { label: "Notice Board", to: "/notice-board" },
+];
+
+// ---- Online Fee Payment ----
+// SAMPLE amounts hain. Apni real fee structure se replace kar lena.
+export const feeTypes = [
+  { id: "tuition", label: "Tuition Fee", amount: 12000, hint: "Quarterly" },
+  { id: "transport", label: "Transport Fee", amount: 3000, hint: "Quarterly" },
+  { id: "activity", label: "Activity Fee", amount: 1500, hint: "Annual" },
+  { id: "exam", label: "Exam Fee", amount: 800, hint: "Per term" },
+  { id: "other", label: "Other / Custom", amount: 0, hint: "Enter amount" },
+];
+
+export const classOptions = [
+  "Nursery", "LKG", "UKG",
+  "Class 1", "Class 2", "Class 3", "Class 4", "Class 5", "Class 6",
+  "Class 7", "Class 8", "Class 9", "Class 10", "Class 11", "Class 12",
+];
+
+// ---- Notice Board ----
+// SAMPLE notices hain — apne real notices se replace karo.
+// Naya notice add karne ke liye bas ek object is array me daal do.
+//   date     : "YYYY-MM-DD" — notice publish hone ki date (7 din se purane nahi to "New" badge dikhta hai)
+//   pinned   : true => page ke top par pinned section me dikhega
+//   link     : optional (PDF / Google Drive link), "Open attachment" button banega
+export const noticeCategories = ["All", "Events", "Academics", "Holidays", "Fees", "General"];
+
+export const notices = [
+  {
+    id: "n1",
+    title: "Annual Sports Day — Save the Date",
+    category: "Events",
+    date: "2026-10-23",
+    pinned: true,
+    summary: "Our Annual Sports Day will be held on campus. All students are encouraged to participate.",
+    details:
+      "Annual Sports Day will be held on the school grounds from 9:00 am onwards. Students should report in their house colour t-shirts and sports shoes. Parents are warmly invited to cheer for the children. Event-wise entry forms are available with class teachers.",
+    link: "",
+  },
+  {
+    id: "n2",
+    title: "Parent–Teacher Meeting",
+    category: "Academics",
+    date: "2026-10-22",
+    pinned: true,
+    summary: "PTM for all classes. Please collect the progress report from your child's class teacher.",
+    details:
+      "The Parent–Teacher Meeting will be held between 9:00 am and 12:00 pm. Parents are requested to come on their allotted time slot, shared by the class teacher, to avoid waiting. Students must accompany their parents.",
+    link: "",
+  },
+  {
+    id: "n3",
+    title: "Diwali Holidays",
+    category: "Holidays",
+    date: "2026-10-20",
+    pinned: false,
+    summary: "School will remain closed for the Diwali break. Classes resume after the holidays.",
+    details:
+      "On the occasion of Diwali, the school will remain closed for the festival break. Holiday homework has been shared through class teachers. Regular classes will resume on the first working day after the break. Wishing all families a safe and joyful Diwali!",
+    link: "",
+  },
+  {
+    id: "n4",
+    title: "Quarterly Fee Payment Reminder",
+    category: "Fees",
+    date: "2026-10-15",
+    pinned: false,
+    summary: "Parents are requested to pay the quarterly fee before the due date using Online Fee Payment.",
+    details:
+      "The quarterly fee can now be paid online through UPI from the Online Fee Payment page. Please keep the admission number of your child handy. A receipt is generated immediately after a successful payment.",
+    link: "",
+  },
+  {
+    id: "n5",
+    title: "Science Exhibition — Project Registration",
+    category: "Academics",
+    date: "2026-10-12",
+    pinned: false,
+    summary: "Students of Class 6 to 10 can register their working models and projects with the science department.",
+    details:
+      "Students of Class 6 to 10 may register their projects with the science department. Projects can be individual or in groups of up to three. Guidance sessions will be held every Wednesday during the activity period.",
+    link: "",
+  },
+  {
+    id: "n6",
+    title: "Children's Day Celebration",
+    category: "Events",
+    date: "2026-10-08",
+    pinned: false,
+    summary: "A day full of games, performances and surprises for our little diamonds.",
+    details:
+      "We will celebrate Children's Day with fun games, music and dance performances by teachers. Students may come in colourful casual clothes on this day. Regular lessons will be replaced by activities.",
+    link: "",
+  },
+  {
+    id: "n7",
+    title: "Winter Uniform Guidelines",
+    category: "General",
+    date: "2026-10-01",
+    pinned: false,
+    summary: "Winter uniform will be applicable from next month. Please check the guidelines.",
+    details:
+      "The winter uniform is applicable from next month. Only navy blue sweaters and blazers with the school logo are allowed. Parents may contact the school office in case of any difficulty in getting the uniform.",
+    link: "",
+  },
+];
+
+// ---- Gallery ----
+// Har event ek carousel banta hai. Photos 3 tareeke se add ho sakti hain
+// (teeno saath me bhi chalte hain):
+//
+//  1) FOLDER (sabse aasaan): photos ko `src/assets/gallery/<event id>/` folder me
+//     daal do — jaise `src/assets/gallery/sports-day/pic1.jpg`. Apne aap dikhengi.
+//  2) `photos: ["https://.../a.jpg", ...]` — direct image links.
+//  3) `albumUrl`: Google Drive folder link => page ke andar hi grid me dikhega.
+//     Google Photos album link => "View full album" button banega
+//     (Google Photos apne albums ko kisi website me embed hone nahi deta).
+//
+// Naya event: ek object add karo + (agar folder use karna hai) usi `id` ka folder banao.
+export const galleryEvents = [
+  { id: "sports-day", title: "Annual Sports Day", date: "", description: "", photos: [], albumUrl: "" },
+  { id: "science-exhibition", title: "Science Exhibition", date: "", description: "", photos: [], albumUrl: "" },
+  { id: "annual-function", title: "Annual Function", date: "", description: "", photos: [], albumUrl: "" },
+  { id: "childrens-day", title: "Children's Day", date: "", description: "", photos: [], albumUrl: "" },
+  { id: "independence-day", title: "Independence Day", date: "", description: "", photos: [], albumUrl: "" },
+];
+
+// ---- Footer ----
+export const footerContact = {
+  phones: [
+    { label: "+91-9694132733", href: "tel:+919694132733" },
+    { label: "+91-9829133136", href: "tel:+919829133136" },
+  ],
+  hours: ["Monday to Friday: 8:00am - 5:00pm", "Weekend: 8:00am - 2:00pm"],
+  whatsapp: "https://wa.me/qr/2LMA37Z4VHLRK1",
+  youtube: "https://www.youtube.com/@diamondkidsschool2951",
+};
+
+export const footerLegalLinks = [
+  { label: "Terms & Conditions", to: "#" },
+  { label: "Privacy Policy", to: "#" },
+  { label: "Cookies", to: "#" },
+];

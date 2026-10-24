@@ -137,7 +137,7 @@ export default function FourWeekCalendar() {
     a.getDate() === b.getDate();
 
   return (
-    <div className="min-h-screen w-full bg-[#0b0e14] p-6 flex items-center justify-center relative">
+    <div className="min-h-screen w-full bg-[#0b0e14] px-4 pt-6 pb-16 sm:px-6 flex items-center justify-center relative">
       <div className="w-full max-w-6xl rounded-2xl border border-white/10 bg-[#12151d] shadow-2xl overflow-hidden">
         
         {/* Header */}

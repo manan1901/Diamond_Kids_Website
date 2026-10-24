@@ -1,2 +1,65 @@
 @import "tailwindcss";
 @plugin "tailwindcss-motion";
+
+/* ---------- Brand tokens ----------
+   Ab `bg-navy`, `text-coral`, `bg-sand` jaise short classes use kar sakte ho
+   (pehle har jagah #1B2A4A / #FF6B4A likhna padta tha). */
+@theme {
+  --color-navy: #1b2a4a;
+  --color-coral: #ff6b4a;
+  --color-sand: #fdf8f0;
+  --color-sage: #7c9885;
+  --color-gold: #ffc857;
+
+  --font-serif: "Fraunces", Georgia, serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-slow: float 9s ease-in-out infinite;
+  --animate-wave: wave 14s linear infinite;
+  --animate-spin-slow: spin 24s linear infinite;
+  --animate-pulse-ring: pulse-ring 1.8s ease-out infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-14px) rotate(6deg); }
+  }
+  @keyframes wave {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes pulse-ring {
+    0% { transform: scale(0.8); opacity: 0.7; }
+    100% { transform: scale(2.2); opacity: 0; }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-coral);
+  color: white;
+}
+
+/* Calendar ke event list ke liye patla scrollbar */
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 999px; }
+
+/* Gallery thumbnails ka scrollbar chhupane ke liye */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Fee receipt print karte waqt sirf receipt dikhe */
+@media print {
+  body * { visibility: hidden; }
+  .print-area, .print-area * { visibility: visible; }
+  .print-area { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none !important; }
+  .no-print { display: none !important; }
+}
